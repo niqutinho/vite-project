@@ -1,26 +1,36 @@
-import PropTypes from 'prop-types';
+import {useLocation, useNavigate} from 'react-router';
 
-const SingleView = ({item, setSelectedItem}) => {
+const Single = () => {
+  const {state: item} = useLocation();
+  const navigate = useNavigate();
+
+  if (!item) {
+    return (
+      <section>
+        <h2>No media selected</h2>
+        <button type="button" onClick={() => navigate('/')}>
+          Back to media
+        </button>
+      </section>
+    );
+  }
+
   const isImage = item.media_type.startsWith('image/');
   const isVideo = item.media_type.startsWith('video/');
 
   return (
-    <dialog
-      className="single-view"
-      open={Boolean(item)}
-      aria-labelledby="single-view-title"
-    >
+    <section className="single-view">
       <div className="single-view-header">
         <div>
-          <h3 id="single-view-title">{item.title}</h3>
+          <h2>{item.title}</h2>
           {item.description && <p>{item.description}</p>}
         </div>
         <button
           className="single-view-close"
           type="button"
-          onClick={() => setSelectedItem(null)}
+          onClick={() => navigate(-1)}
         >
-          Close
+          Go back
         </button>
       </div>
       <div className="single-view-content">
@@ -30,18 +40,8 @@ const SingleView = ({item, setSelectedItem}) => {
           <p>Preview is not available for this media type.</p>
         )}
       </div>
-    </dialog>
+    </section>
   );
 };
 
-SingleView.propTypes = {
-  item: PropTypes.shape({
-    filename: PropTypes.string.isRequired,
-    media_type: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-  }).isRequired,
-  setSelectedItem: PropTypes.func.isRequired,
-};
-
-export default SingleView;
+export default Single;
