@@ -23,6 +23,7 @@ const Single = () => {
       <div className="single-view-header">
         <div>
           <h2>{item.title}</h2>
+          <p>Owner: {item.username}</p>
           {item.description && <p>{item.description}</p>}
         </div>
         <button
